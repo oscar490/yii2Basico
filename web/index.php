@@ -11,7 +11,14 @@ class Prueba extends \yii\base\Component
 {
     const EVENTO_HOLA = 'hola';
 
-    private $_numero = 0;
+    private $_numero;
+
+    public function __construct($numero = 0 , $config = [])
+    {
+        $this->setNumero($numero);
+
+        parent::__construct($config);
+    }
 
     public function getNumero()
     {
@@ -30,12 +37,19 @@ $p = Yii::createObject([
     'class'=>'Prueba',
     'numero'=>88,
 ]);
-$p->on(Prueba::EVENTO_HOLA, function ($event) {
-    echo "Se ha disparado el evento";
+
+$q = Yii::createObject([
+    'class' => 'Prueba',
+]);
+
+\yii\base\Event::on(Prueba::className(), Prueba::EVENTO_HOLA, function ($event) {
+    echo "Se dispara el evento <br>";
 });
 
-$p->trigger(Prueba::EVENTO_HOLA);
 
+
+$p->trigger(Prueba::EVENTO_HOLA);
+$q->trigger(Prueba::EVENTO_HOLA);
 
 //$config = require __DIR__ . '/../config/web.php';
 
