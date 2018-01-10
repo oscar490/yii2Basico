@@ -31,6 +31,17 @@ class Prueba extends \yii\base\Component
             $this->_numero = $numero;
         }
     }
+
+    //public function behaviors()
+    //{
+        // lista de comportamientos
+    //    return [
+    //        [
+    //            'class' => Comportamiento::className(),
+    //            'propiedad' => 20,
+    //        ],
+    //    ];
+    //}
 }
 
 $p = Yii::createObject([
@@ -46,10 +57,41 @@ $q = Yii::createObject([
     echo "Se dispara el evento <br>";
 });
 
+class Comportamiento extends \yii\base\Behavior
+{
+    public $miembro;
+    private $_propiedad;
+
+    public function getPropiedad()
+    {
+        return $this->_propiedad;
+    }
+
+    public function setPropiedad($propiedad)
+    {
+        $this->_propiedad = $propiedad;
+    }
+
+    public function metodo()
+    {
+        echo 'hola <br>';
+    }
 
 
-$p->trigger(Prueba::EVENTO_HOLA);
-$q->trigger(Prueba::EVENTO_HOLA);
+}
+
+$p = Yii::createObject([
+    'class'=>Prueba::className(),
+    'as comportamento' => [
+        'class' => Comportamiento::className(),
+        'propiedad' => 95,
+    ]
+]);
+
+
+echo $p->propiedad;
+//$p->trigger(Prueba::EVENTO_HOLA);
+//$q->trigger(Prueba::EVENTO_HOLA);
 
 //$config = require __DIR__ . '/../config/web.php';
 
